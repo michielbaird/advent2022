@@ -1,37 +1,44 @@
 import sys
+from typing import Tuple, List, Optional
 AT_MOST = 100000
 
 TOTAL = 70000000
 REQUIRED = 30000000
 
 class Dir:
-    def __init__(self, parent, name):
+    def __init__(self, parent: 'Dir', name: str):
         self.name = name
         self.dirs = {}
         self.files = {}
         self.parent = parent
-    def __str__(self):
-        r = [
-            self.name,
-            " {",
+    
+    def __str__(self) -> str:
+        return self.display()
+    def display(self, level=0):
+        indent = "  "*level
+        result = [
+            indent + self.name + " {",
         ]
+        indent2 = indent +  "  "
         for d in self.dirs.values():
-            r.append(str(d))
+            result.append(d.display(level + 1))
         for k, v in self.files.items():
-            r.append(k + " " + str(v))
-        r.append("}")
-        return "\n".join(r)
+            result.append(indent2 + k + " " + str(v))
+        result.append(indent + "}")
+        return "\n".join(result)
 
-    def solve(self, sizes=None):
+    def solve(self, sizes: Optional[List[int]] = None) -> Tuple[int, int, List[int]]:
         if sizes is None:
             sizes = []
         total = 0
         result = 0
         for d in self.dirs.values():
-            t, r, _ = d.solve(sizes=sizes)
+            t, inner_result, _ = d.solve(sizes=sizes)
             total += t
-            result += r
+            result += inner_result
         for c in self.files.values():
+
+
             total += c
         sizes.append(total)
         if total <= AT_MOST:
@@ -79,13 +86,7 @@ def main():
             print(i)
             break
     print(r)
-    #print(str(root))
-        
-
-        
-
-    
-    
+    print(str(root))
 
 if __name__ == "__main__":
     main()
