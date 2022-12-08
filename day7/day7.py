@@ -14,6 +14,7 @@ class Dir:
     
     def __str__(self) -> str:
         return self.display()
+        
     def display(self, level=0):
         indent = "  "*level
         result = [
