@@ -50,7 +50,7 @@ for row in grid:
     for t in row:
         view = reduce(lambda a,b: a*b, t[-4:], 1)
         best = max(best, view)
-print("\n".join(repr(x) for x in grid))
+#print("\n".join(repr(x) for x in grid))
 print(score)
 print(best)
 
