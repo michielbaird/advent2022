@@ -1,6 +1,6 @@
 import sys
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Callable, Optional
 from functools import reduce
 
 MOD = 1_000_000_007
@@ -8,13 +8,13 @@ MOD = 1_000_000_007
 p_operation = re.compile(r"^new = (old|\-?\d+) ([\+\-\*]) (old|\-?\d+)$")
 
 
-def parse_token(token, value):
+def parse_token(token: str, value: int):
     if token == "old":
         return value
     else:
         return int(token)
 
-def eval(operation, value):
+def eval(operation: str, value: int):
     m = p_operation.match(operation)
     operand = m.group(2)
     if operand == "+":
@@ -27,7 +27,15 @@ def eval(operation, value):
         
 
 class Monkey:
-    def __init__(self, id, items, operation, test, pass_mon, fail_mon):
+    def __init__(
+        self: 'Monkey', 
+        id: int, 
+        items: List[int], 
+        operation: str, 
+        test: int, 
+        pass_mon: int, 
+        fail_mon: int
+    ):
         self.id = id
         self.items = items
         self.operation = operation
@@ -36,7 +44,7 @@ class Monkey:
         self.fail_mon = fail_mon
         self.inspections = 0
     
-    def play_turn(self, adjust) -> List[Tuple[int, int]]:
+    def play_turn(self: 'Monkey', adjust: Callable[[int], int]) -> List[Tuple[int, int]]:
         result = []
         for item in self.items:
             new = adjust(eval(self.operation, item))
@@ -50,7 +58,7 @@ class Monkey:
         return result
 
     
-    def __repr__(self) -> str:
+    def __repr__(self: 'Monkey') -> str:
         return \
 f"""Monkey {self.id}:
     Items: {self.items}
@@ -89,7 +97,7 @@ def parse_input(raw: str) -> Dict[int, 'Monkey']:
         result[monk.id] = monk
     return result
 
-def run_round(raw_monkeys, part2=False):
+def run_round(raw_monkeys: str, part2: Optional[bool]=False):
     monkeys = parse_input(raw_monkeys)
     if part2:
         rounds = 10_000
