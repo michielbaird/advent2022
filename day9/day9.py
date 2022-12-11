@@ -30,7 +30,7 @@ def solve(moves, size):
                 follow[1] = lead[1] -1
                 follow[0] = lead[0]
             elif lead[1] - follow[1] == -2:
-                follow[1] = lead[1] +1
+                follow[1] = lead[1] + 1
                 follow[0] = lead[0]
 
         visited.add(tuple(tail))
