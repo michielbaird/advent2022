@@ -1,6 +1,9 @@
 import sys
 import re
 from typing import Dict, List, Tuple
+from functools import reduce
+
+MOD = 1_000_000_007
 
 p_operation = re.compile(r"^new = (old|\-?\d+) ([\+\-\*]) (old|\-?\d+)$")
 
@@ -33,10 +36,10 @@ class Monkey:
         self.fail_mon = fail_mon
         self.inspections = 0
     
-    def play_turn(self) -> List[Tuple[int, int]]:
+    def play_turn(self, adjust) -> List[Tuple[int, int]]:
         result = []
         for item in self.items:
-            new = eval(self.operation, item) // 3
+            new = adjust(eval(self.operation, item))
             self.inspections += 1
             if new % self.test == 0:
                 n = self.pass_mon
@@ -86,18 +89,32 @@ def parse_input(raw: str) -> Dict[int, 'Monkey']:
         result[monk.id] = monk
     return result
 
-def main():
-    monkeys = parse_input(sys.stdin.read())
+def run_round(raw_monkeys, part2=False):
+    monkeys = parse_input(raw_monkeys)
+    if part2:
+        rounds = 10_000
+        mod = reduce(lambda v, m: v*m.test, monkeys.values(), 1)
+        adjust = lambda x: x%mod
+    else:
+        rounds = 20
+        adjust = lambda x: x//3
+
+
     n = len(monkeys)
-    for round in range(20):
+    for _ in range(rounds):
         for i in range(n):
-            to_move = monkeys[i].play_turn()
+            to_move = monkeys[i].play_turn(adjust)
             for (monkey, val) in to_move:
                 monkeys[monkey].items.append(val)
     l_monkeys = list(monkeys.values())
     l_monkeys.sort(key=lambda m: -m.inspections)
-    print(monkeys)
+    #print(l_monkeys[:2])
     print(l_monkeys[0].inspections * l_monkeys[1].inspections)
+
+def main():
+    raw_monkeys = sys.stdin.read()
+    run_round(raw_monkeys)
+    run_round(raw_monkeys, True)
 
 
 
