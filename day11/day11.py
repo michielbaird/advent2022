@@ -3,8 +3,6 @@ import re
 from typing import Dict, List, Tuple, Callable, Optional
 from functools import reduce
 
-MOD = 1_000_000_007
-
 p_operation = re.compile(r"^new = (old|\-?\d+) ([\+\-\*]) (old|\-?\d+)$")
 
 
