@@ -7,7 +7,6 @@ def parse(raw_val, index=0):
     while index < len(raw_val):
         if raw_val[index] == "[":
             index, val = parse(raw_val, index+1)
-            #result.append(val)
         elif raw_val[index] == ",":
             result.append(val)
             val = 0
@@ -24,6 +23,7 @@ def parse(raw_val, index=0):
     if val is not None:
         result.append(val)
     return len(raw_val)-1, result
+
 def compare(left, right):
     for l, r in zip(left, right):
         match (l, r):
