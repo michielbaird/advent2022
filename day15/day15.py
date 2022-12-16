@@ -99,6 +99,26 @@ def solve2(vals):
             print("Woo: ", y)
 
             #print(tree.display())
+def solve2_with_hint(vals):
+    d_map = {}
+    for i, (x1, y1, x2, y2) in enumerate(vals):
+        d_map[i] = abs(x1-x2) + abs(y1-y2)
+    print(d_map)
+    def test_dists(x, y):
+        return all( (lambda x1, y1, _x, _y: abs(x1-x) + abs(y1-y) > dist)(*vals[index]) for index, dist in d_map.items())
+    
+    for index, dist in d_map.items():
+        print(index, dist)
+        dist += 1
+        x, y, _, _ = vals[index]
+        for j in range(0, dist+1):
+            for l, r in [(-1,-1), (1,-1), (-1, 1), (1,1)]:
+                x_t, y_t = x + l*(dist - j), y + r*dist
+                if 0 <= x_t <= MAX_XY and 0 <= y_t <= MAX_XY and test_dists(x_t, y_t):
+                    print(x_t*4_000_000 + y_t)
+                    print(x_t, y_t)
+                    return
+
 
 def main():
     vals = [
@@ -107,7 +127,7 @@ def main():
     ]
     #solve(vals, 10)
     solve(vals, 2_000_000)
-    solve2(vals)
+    solve2_with_hint(vals)
     print(vals)
 
 low = 0
