@@ -69,8 +69,8 @@ def main():
     flow_name_to_id = {}
     for i, v in enumerate(has_flow):
         flow_name_to_id[v] = i
-    print(flow_by_ident)
-    print(flow_name_to_id)
+    #print(flow_by_ident)
+    #print(flow_name_to_id)
     
 
     DP = {}
