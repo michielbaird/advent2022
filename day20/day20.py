@@ -292,8 +292,6 @@ def main():
         shift = node.val
         index = tree.getIndex(node)
         new_index = index + shift
-        while new_index < 0:
-            new_index += (N - 1)
         new_index %= (N - 1)
         if new_index == 0 and shift < 0:
             new_index = N - 1
