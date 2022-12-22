@@ -1,13 +1,13 @@
 import sys
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, List
 from collections import deque
 import re
 
 @dataclass()
 class Op:
     name: str
-    a: Union[int, str]
+    a: Union[int, str, ]
     op: str
     b: Union[int, str]
     def is_resolved(self):
