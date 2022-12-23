@@ -15,7 +15,6 @@ class Bounds:
 
 def main():
     map = [[c for c in line] for line in sys.stdin.read().split("\n")]
-    #print(map)
     
     deltas = [
         [(-1, -1), (-1,  0), (-1,  1)], # N
@@ -33,20 +32,27 @@ def main():
         for col in range(len(map[row])):
             if map[row][col] == "#":
                 elves[(row, col)] = (row, col)
+
+    round_deltas = [
+        deltas,
+        deltas[1:]+deltas[:1],
+        deltas[2:]+deltas[:2],
+        deltas[3:]+deltas[:3]
+    ]
     for round in range(10000):
         if round == 10:
             rows = [r[0] for r, v in elves.items() if v is not None]
             cols = [r[1] for r, v in elves.items() if v is not None]
             bounds = Bounds(min(rows), max(rows), min(cols), max(cols))
-            print((bounds.max_col-bounds.min_col)*(bounds.max_row-bounds.min_row) - len(elves))
-
+            print((bounds.max_col-bounds.min_col+1)*(bounds.max_row-bounds.min_row+1) - len(elves))
+        round_delta = round_deltas[round%4]
         next_elves = {}
         for (row, col) in elves.keys():
             if all(((row + dr, col + dc) not in elves) for dr, dc in eight):
                 next_elves[(row, col)] = (row, col)
                 continue
             moved = False
-            for dir in deltas[round%4:]+deltas[:round%4]:
+            for dir in round_delta:
                 key = (row + dir[1][0], col + dir[1][1])
                 if all(((row + dr, col + dc) not in elves) for dr, dc in dir):
                     moved = True
@@ -56,7 +62,6 @@ def main():
                             next_elves[key] = None
                         next_elves[(row, col)] = (row, col)
                     else:
-                        #print("moving")
                         next_elves[key] = (row, col)
                     break
             if not moved:
@@ -70,11 +75,6 @@ def main():
         if elves == old_elves:
             print(round + 1)
             break
-    
-
-
-
-
 
 if __name__ == "__main__":
     main()
