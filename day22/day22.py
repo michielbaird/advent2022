@@ -74,13 +74,6 @@ def solve2(map, instructions):
         "R": 0, "D": 1, "L": 2, "U": 3
     }
         # dir 0 -> Right, 1 -> Down, 2 -> Left, 3 -> up
-    checked = {
-        (0, 1), (0,5), (5,3), (3,5), (5,0), (5,4),
-        (4, 5), (3, 4), (4,3), (3,2), (2,3), (2,0),
-        (0, 3), (3, 0), (0,2), (2, 1), (1, 0), (1, 2),
-        (2, 4), (4, 2), (4, 1), (3, 2), (1, 5), (5,1),
-        (1,4)
-    }
     
     for ins in instructions:
         match ins:
@@ -109,12 +102,6 @@ def solve2(map, instructions):
                         next_row, next_col, next_dir, next_face_id = t_func(row, col)
                         next_dir = dir_to_int[next_dir]
                         next_face = Faces[next_face_id]
-                        if (face_id, next_face_id) not in checked:
-                            print(row, col, "to", next_row, next_col)
-                            print(face_id, "to", next_face_id)
-                            print("dir", dir, "to", next_dir)
-                            print()
-                            return
                         if not next_face.is_in_bounds(next_row, next_col):
                             print("bad travel")
                             return
