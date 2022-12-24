@@ -1,7 +1,6 @@
 import sys
 from heapq import heappush, heappop
 
-
 DELTAS = [(0,1), (1,0), (-1, 0), (0, -1)]
 
 class PathFinder:
@@ -24,6 +23,7 @@ class PathFinder:
             set(x-1 for x in range(1,len(valley_map)-1) if valley_map[x][y] == "v")
             for y in range(1,len(valley_map[0])-1)
         ]
+
     def check_blizzards(self, row, col, time):
         if row == -1 or row == self.height:
             return False
@@ -97,8 +97,7 @@ class PathFinder:
 
 def main():
     valley = sys.stdin.read().split("\n")
-    start = (-1, valley[0].index(".") -1)
-    end = (len(valley)-2, valley[-1].index(".") - 1)
+
     path_finder = PathFinder(valley)
     start = (-1, valley[0].index(".") -1)
     end = (len(valley)-2, valley[-1].index(".") - 1)
@@ -109,12 +108,6 @@ def main():
         t2 = func(end, start, t1)
         t3 = func(start, end, t2)
         print("Part 2:", t3)
-
-
-
-    pass
-
-
 
 if __name__ == "__main__":
     main()
